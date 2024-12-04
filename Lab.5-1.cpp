@@ -1,45 +1,34 @@
 #include <iostream>
-#include <string_view>
 #include <cassert>
 
-int countOnes(std::string_view str) 
+
+int countOnes(const std::string& str) 
 {
-    int count = 0; // Счётчик для символов - '1'
-    
-    // Цикл который проходит по каждому символу в строке
+    int count = 0;
     for (char c : str) 
     {
         if (c == '1') 
-        {
-            count++; // Увеличивается счётчик в случае если символ равен '1'
-        }
+            ++count;
     }
-    
-    return count; // Возвращает количество символов '1'
+    return count;
 }
 
+// Тесты
 void runTests() 
 {
-    // Тест - нет символов '1'
-    assert(countOnes("000000") == 0);
-    
-    // Тест - несколько символов '1'
-    assert(countOnes("001100") == 2);
-    
-    // Тест - все символы '1'
-    assert(countOnes("111111") == 6);
-    
-    // Тест - строка с одиночным символом '1'
-    assert(countOnes("0") == 0);
-    assert(countOnes("1") == 1);
-    
-    // Тест - строка с чередующимися символами
-    assert(countOnes("101010") == 3);
-    
-    // Тест - пустая строка без символов
+    assert(countOnes("000000") == 0); // Без 1
+    assert(countOnes("001100") == 2); // Несколько 1
+    assert(countOnes("111111") == 6); // Все 1
+    assert(countOnes("0") == 0); // Только 1 символ (соответственно без 1)
+    assert(countOnes("1") == 1); // Только один 1
+    assert(countOnes("101010") == 3); // Проверка с чередовкой символов
     assert(countOnes("") == 0);
-    
-    std::cout << "All the tests have been passed!" << std::endl;
+
+    std::string stringg = "110011";
+    int result = countOnes(stringg);
+    std::cout << "Number of 1 are: " << result << std::endl;
+
+    std::cout << "All tests completed\n";
 }
 
 int main() 
