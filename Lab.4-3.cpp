@@ -1,17 +1,17 @@
 #include <iostream>
-#include <span>
-#include <cassert>  // Библиотека для использования assert
+#include <cassert>
 
-// 1. Проверка на одинаковую длину массивов и реализация с бесконечным циклом и break
-void productBreak(std::span<int> inputOutput, std::span<int> coefficients)
+// Я решил "пересобрать" код и я не использовал span. Я его немного не перевариваю, поэтому ппытаюсь сделать с обычными массивами
+// 1. Функция с бесконечным циклом и break
+void cycleBreak(int* inputOutput, int* coefficients, size_t size)
 {
-    // Проверка на то, чтобы массивы были одинакового размера
-    assert(inputOutput.size() == coefficients.size() && "The spans must be the same length!");
+    // Проверка на то чтоб массивы были одног размера. Проверка если размер(size) больше 0 и сообщение при ошибке
+    assert(size > 0 && "Array size must be greater than zero!");
 
     size_t i = 0;
     while (true)
     {
-        if (i >= inputOutput.size()) // Условие чтобы выйти из бесконечного цикла
+        if (i >= size)
         {
             break;
         }
@@ -21,25 +21,26 @@ void productBreak(std::span<int> inputOutput, std::span<int> coefficients)
     }
 }
 
-// 2. Реализация с циклом while с условием
-void productWhile(std::span<int> inputOutput, std::span<int> coefficients)
+
+// 2. Цикл while
+void cycleWhile(int* inputOutput, int* coefficients, size_t size)
 {
-    assert(inputOutput.size() == coefficients.size() && "The spans must be the same length!");
+    assert(size > 0 && "Array size must be greater than zero!");
 
     size_t i = 0;
-    while (i < inputOutput.size())
+    while (i < size)
     {
         inputOutput[i] *= coefficients[i];
         ++i;
     }
 }
 
-// 3. Реализация с циклом for
-void productFor(std::span<int> inputOutput, std::span<int> coefficients)
+// 3. Циикл for
+void cycleFor(int* inputOutput, int* coefficients, size_t size)
 {
-    assert(inputOutput.size() == coefficients.size() && "The spans must be the same length!");
+    assert(size > 0 && "Array size must be greater than zero!");
 
-    for (size_t i = 0; i < inputOutput.size(); ++i)
+    for (size_t i = 0; i < size; ++i)
     {
         inputOutput[i] *= coefficients[i];
     }
@@ -47,47 +48,44 @@ void productFor(std::span<int> inputOutput, std::span<int> coefficients)
 
 int main()
 {
-    int inputOutputArray[] = {1, 2, 3, 4, 5};
+    int inputOutputArray1[] = {1, 2, 3, 4, 5};
     int coefficientsArray[] = {10, 20, 30, 40, 50};
+    size_t size = sizeof(inputOutputArray1) / sizeof(inputOutputArray1[0]); // Вычисляется размер массива, если, к прмиеру, размер будет разным
 
-    std::span<int> inputOutput = inputOutputArray;
-    std::span<int> coefficients = coefficientsArray;
+    // 1. Вызов с бесконечным циклом с break-ом
+    cycleBreak(inputOutputArray1, coefficientsArray, size);
 
-    // 1. Вызов функции с бесконечным циклом и break
-    productBreak(inputOutput, coefficients);
-
-    std::cout << "Result using break: ";
-    for (int val : inputOutput)
+    std::cout << "Using break: ";
+    for (size_t i = 0; i < size; ++i)
     {
-        std::cout << val << " ";
+        std::cout << inputOutputArray1[i] << " ";
     }
     std::cout << std::endl;
 
-    // Перезапись массива чтобы использовать в след. функции
+
+    // Снова пишу массив чтоб его использовать в след. цикле
     int inputOutputArray2[] = {1, 2, 3, 4, 5};
-    inputOutput = inputOutputArray2;
 
     // 2. Вызов функции с циклом while
-    productWhile(inputOutput, coefficients);
+    cycleWhile(inputOutputArray2, coefficientsArray, size);
 
-    std::cout << "Result using while: ";
-    for (int val : inputOutput)
+    std::cout << "Using while: ";
+    for (size_t i = 0; i < size; ++i)
     {
-        std::cout << val << " ";
+        std::cout << inputOutputArray2[i] << " ";
     }
     std::cout << std::endl;
 
-    // Перезапись массива чтобы использовать в след. функции
+
     int inputOutputArray3[] = {1, 2, 3, 4, 5};
-    inputOutput = inputOutputArray3;
 
     // 3. Вызов функции с циклом for
-    productFor(inputOutput, coefficients);
+    cycleFor(inputOutputArray3, coefficientsArray, size);
 
-    std::cout << "Result using for: ";
-    for (int val : inputOutput)
+    std::cout << "Using for: ";
+    for (size_t i = 0; i < size; ++i)
     {
-        std::cout << val << " ";
+        std::cout << inputOutputArray3[i] << " ";
     }
     std::cout << std::endl;
 
